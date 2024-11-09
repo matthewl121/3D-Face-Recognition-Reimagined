@@ -17,7 +17,7 @@ except ImportError:
 # Initialize MediaPipe Face Mesh
 mp_face_mesh = mp.solutions.face_mesh
 mp_drawing = mp.solutions.drawing_utils  # Drawing utility for connections
-face_mesh = mp_face_mesh.FaceMesh(max_num_faces=2)
+face_mesh = mp_face_mesh.FaceMesh(max_num_faces=1)
 
 def main(video_source=0):
     # Start capturing video from the webcam or a video file
