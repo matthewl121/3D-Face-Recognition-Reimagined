@@ -10,11 +10,9 @@ sys.path.append(os.path.abspath(os.path.dirname('util')))
 
 from util.util_68 import *
 
-# Initialize dlib's face detector and shape predictor
 detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
 
-# Define a more comprehensive 3D landmark model including ear landmarks
 REFERENCE_LANDMARKS_3D = {
     "left_eye_left_corner": np.array([36.0, 50.0, -10.0]),
     "left_eye_right_corner": np.array([39.0, 50.0, -10.0]),
@@ -31,12 +29,10 @@ REFERENCE_LANDMARKS_3D = {
 }
 
 def main(image_path):
-    # Start timing
     start_time = time.time()
 
-    # Load and process an input image
     image = cv2.imread(image_path)
-    load_time = time.time() - start_time  # Calculate load time
+    load_time = time.time() - start_time 
     print(f"Time taken to load image: {load_time:.4f} seconds")
 
     if image is None:
@@ -45,22 +41,17 @@ def main(image_path):
 
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    # Detect faces
     faces = detector(gray)
 
     for face in faces:
-        # Extract 2D landmarks
         landmarks_2d = extract_landmarks_2d(gray, face, predictor)
 
-        # Map to approximate 3D landmarks
         candidate_landmarks_3d = map_2d_to_3d(landmarks_2d, REFERENCE_LANDMARKS_3D)
 
-        # Recognize face by comparing to reference landmarks
         similarity_score = recognize_face(REFERENCE_LANDMARKS_3D, candidate_landmarks_3d)
         print(f"Similarity Score: {similarity_score}")
 
-        # Define threshold for recognition
-        if similarity_score < 20:  # Example threshold
+        if similarity_score < 20:
             print("Face recognized")
         else:
             print("Face not recognized")
