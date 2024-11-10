@@ -11,7 +11,7 @@ sys.path.append(os.path.abspath(os.path.dirname('util')))
 from util.util_68 import *
 
 detector = dlib.get_frontal_face_detector()
-predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
+predictor = dlib.shape_predictor("landmarks_68.dat")
 
 REFERENCE_LANDMARKS_3D = {
     "left_eye_left_corner": np.array([36.0, 50.0, -10.0]),
