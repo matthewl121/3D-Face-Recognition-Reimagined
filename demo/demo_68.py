@@ -56,12 +56,10 @@ def main(image_path):
         else:
             print("Face not recognized")
 
-    # Display the image with landmarks
     for face in faces:
         for (x, y) in extract_landmarks_2d(gray, face, predictor):
             cv2.circle(image, (x, y), 2, (0, 255, 0), -1)
-        
-    # Draw the ear landmarks
+
     for ear_key in ["left_ear", "right_ear"]:
         x, y, _ = candidate_landmarks_3d[ear_key]
         cv2.circle(image, (int(x), int(y)), 4, (255, 0, 0), -1)  # Different color for ear
