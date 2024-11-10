@@ -1,0 +1,26 @@
+<annotation verified="yes">
+	<folder>3D_Pictures</folder>
+	<filename>IMG_8029.JPG</filename>
+	<path>C:\Users\mli00\Desktop\3D_Pictures\IMG_8029.JPG</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1536</width>
+		<height>2048</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>Matt</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>683</xmin>
+			<ymin>731</ymin>
+			<xmax>943</xmax>
+			<ymax>1085</ymax>
+		</bndbox>
+	</object>
+</annotation>

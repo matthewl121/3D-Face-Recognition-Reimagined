@@ -1,0 +1,26 @@
+<annotation verified="yes">
+	<folder>3D_Pictures</folder>
+	<filename>Screenshot 2024-09-26 at 2.44.07 PM.JPG</filename>
+	<path>C:\Users\mli00\Desktop\3D_Pictures\Screenshot 2024-09-26 at 2.44.07 PM.JPG</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>2458</width>
+		<height>1536</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>Matt</name>
+		<pose>Unspecified</pose>
+		<truncated>1</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1005</xmin>
+			<ymin>1</ymin>
+			<xmax>1273</xmax>
+			<ymax>268</ymax>
+		</bndbox>
+	</object>
+</annotation>
