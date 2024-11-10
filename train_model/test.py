@@ -34,7 +34,7 @@ if __name__ == "__main__":
     image_w = 512
     num_landmarks = 106
 
-    dataset_path = "/media/nikhil/Seagate Backup Plus Drive/ML_DATASET/LaPa"
+    dataset_path = "img"
     model_path = os.path.join("files", "model.h5")
 
     (train_x, train_y), (valid_x, valid_y), (test_x, test_y) = load_dataset(dataset_path)
