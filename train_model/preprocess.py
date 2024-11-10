@@ -7,10 +7,8 @@ from sklearn.svm import SVC
 import pickle
 from keras_facenet import FaceNet
 
-# Load the FaceNet model
 embedder = FaceNet()
 
-# Helper function to preprocess face images for FaceNet
 def preprocess_face(img):
     img = cv2.resize(img, (160, 160))
     img = img.astype('float32')
@@ -18,7 +16,6 @@ def preprocess_face(img):
     img = (img - mean) / std
     return np.expand_dims(img, axis=0)
 
-# Function to load faces and labels from annotated data
 def load_annotated_faces(image_dir, annotation_dir):
     data = []
     for xml_file in os.listdir(annotation_dir):
@@ -27,7 +24,6 @@ def load_annotated_faces(image_dir, annotation_dir):
         tree = ET.parse(os.path.join(annotation_dir, xml_file))
         root = tree.getroot()
         
-        # Get image filename and load the image
         image_file = root.find('filename').text
         img_path = os.path.join(image_dir, image_file)
         image = cv2.imread(img_path)
@@ -37,7 +33,6 @@ def load_annotated_faces(image_dir, annotation_dir):
             continue
         
         for obj in root.findall('object'):
-            # Get label and bounding box coordinates
             label = obj.find('name').text
             bbox = obj.find('bndbox')
             x_min = int(bbox.find('xmin').text)
@@ -51,10 +46,8 @@ def load_annotated_faces(image_dir, annotation_dir):
     
     return data
 
-# Load faces and labels from annotated images
 faces, labels = zip(*load_annotated_faces(r"C:\Users\mli00\Desktop\3D_Pictures", r"landmarkXML"))
 
-# Convert faces to embeddings using FaceNet
 embeddings = []
 for face in faces:
     # Extract embeddings
@@ -62,12 +55,10 @@ for face in faces:
     if detection:
         embeddings.append(detection[0]['embedding'])
 
-# Encode labels and train the classifier
 label_encoder = LabelEncoder()
 labels_encoded = label_encoder.fit_transform(labels)
 classifier = SVC(kernel='linear', probability=True)
 classifier.fit(embeddings, labels_encoded)
 
-# Save classifier and label encoder
 with open('classifier.pkl', 'wb') as f:
     pickle.dump((classifier, label_encoder), f)

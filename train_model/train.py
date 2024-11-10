@@ -31,14 +31,12 @@ def load_dataset(path):
     return (train_x, train_y), (valid_x, valid_y), (test_x, test_y)
 
 def read_image_lankmarks(image_path, landmark_path):
-    """ Image """
     image = cv2.imread(image_path, cv2.IMREAD_COLOR)
     h, w, _ = image.shape
     image = cv2.resize(image, (image_w, image_h))
     image = image/255.0
     image = image.astype(np.float32)
 
-    """ Lankmarks """
     data = open(landmark_path, "r").read()
     lankmarks = []
 
@@ -89,14 +87,12 @@ def build_model(input_shape, num_landmarks):
     return model
 
 if __name__ == "__main__":
-    """ Seeding """
+
     np.random.seed(42)
     tf.random.set_seed(42)
 
-    """ Directory for storing files """
     create_dir("files")
 
-    """ Hyperparameters """
     image_h = 512
     image_w = 512
     num_landmarks = 500
@@ -105,25 +101,19 @@ if __name__ == "__main__":
     lr = 1e-3
     num_epochs = 100
 
-    """ Paths """
-    dataset_path = "/media/nikhil/Seagate Backup Plus Drive/ML_DATASET/LaPa"
+    dataset_path = "img"
     model_path = os.path.join("files", "model.h5")
-    csv_path = os.path.join("files", "data.csv")
 
-    """ Loading the dataset """
     (train_x, train_y), (valid_x, valid_y), (test_x, test_y) = load_dataset(dataset_path)
     print(f"Train: {len(train_x)}/{len(train_y)} - Valid: {len(valid_x)}/{len(valid_y)} - Test: {len(test_x)}/{len(test_x)}")
     print("")
 
-    """ Dataset Pipeline """
     train_ds = tf_dataset(train_x, train_y, batch=batch_size)
     valid_ds = tf_dataset(valid_x, valid_y, batch=batch_size)
 
-    """ Model """
     model = build_model(input_shape, num_landmarks)
     model.compile(loss="binary_crossentropy", optimizer=tf.keras.optimizers.Adam(lr))
 
-    """ Training """
     callbacks = [
         ModelCheckpoint(model_path, verbose=1, save_best_only=True, monitor='val_loss'),
         ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=5, min_lr=1e-7, verbose=1),
