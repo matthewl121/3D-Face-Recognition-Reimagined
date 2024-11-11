@@ -30,10 +30,10 @@ REFERENCE_LANDMARKS_3D = {
 
 def main(image_path):
     start_time = time.time()
-
+    # read image
     image = cv2.imread(image_path)
     load_time = time.time() - start_time 
-    print(f"Time taken to load image: {load_time:.4f} seconds")
+    print(f"Time taken to load image: {load_time:.5f} seconds")
 
     if image is None:
         print(f"Error: Unable to open image at {image_path}")
@@ -44,6 +44,7 @@ def main(image_path):
     faces = detector(gray)
 
     for face in faces:
+        # extract facial landmarks, then map from 2d to 3d
         landmarks_2d = extract_landmarks_2d(gray, face, predictor)
 
         candidate_landmarks_3d = map_2d_to_3d(landmarks_2d, REFERENCE_LANDMARKS_3D)
@@ -57,10 +58,12 @@ def main(image_path):
             print("Face not recognized")
 
     for face in faces:
+        # plot the landmarks on the image
         for (x, y) in extract_landmarks_2d(gray, face, predictor):
             cv2.circle(image, (x, y), 2, (0, 255, 0), -1)
 
     for ear_key in ["left_ear", "right_ear"]:
+        #if possible, detect left and right ears
         x, y, _ = candidate_landmarks_3d[ear_key]
         cv2.circle(image, (int(x), int(y)), 4, (255, 0, 0), -1)  # Different color for ear
 

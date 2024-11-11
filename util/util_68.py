@@ -5,13 +5,13 @@ from scipy.spatial import distance
 import argparse
 
 def extract_landmarks_2d(image, face, predictor):
-    """Extracts 2D facial landmarks from the image."""
+    # Extracts 2D facial landmarks from the image
     landmarks = predictor(image, face)
     points = [(landmarks.part(i).x, landmarks.part(i).y) for i in range(68)]
     return np.array(points)
 
 def map_2d_to_3d(landmarks_2d, REFERENCE_LANDMARKS_3D):
-    """Maps 2D landmarks to approximate 3D space based on reference."""
+    # Maps 2D landmarks to approximate 3D space based on reference
     mapped_landmarks_3d = {}
     for key, ref_point in REFERENCE_LANDMARKS_3D.items():
         # For ear landmarks, just directly map them, or you can adjust accordingly
@@ -29,7 +29,6 @@ def map_2d_to_3d(landmarks_2d, REFERENCE_LANDMARKS_3D):
     return mapped_landmarks_3d
 
 def recognize_face(reference_3d, candidate_3d):
-    """Recognizes face by comparing 3D landmark distances."""
     total_distance = 0.0
     for key in reference_3d:
         ref_point = reference_3d[key]

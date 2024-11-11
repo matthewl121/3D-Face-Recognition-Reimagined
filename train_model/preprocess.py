@@ -7,8 +7,10 @@ from sklearn.svm import SVC
 import pickle
 from keras_facenet import FaceNet
 
+# Initialize FaceNet model for face embeddings
 embedder = FaceNet()
 
+# Function to preprocess face images for embedding extraction
 def preprocess_face(img):
     img = cv2.resize(img, (160, 160))
     img = img.astype('float32')
@@ -16,6 +18,7 @@ def preprocess_face(img):
     img = (img - mean) / std
     return np.expand_dims(img, axis=0)
 
+# Function to load annotated faces and labels from directories
 def load_annotated_faces(image_dir, annotation_dir):
     data = []
     for xml_file in os.listdir(annotation_dir):
@@ -35,6 +38,7 @@ def load_annotated_faces(image_dir, annotation_dir):
         for obj in root.findall('object'):
             label = obj.find('name').text
             bbox = obj.find('bndbox')
+            # Extract bounding box coordinates for the face
             x_min = int(bbox.find('xmin').text)
             y_min = int(bbox.find('ymin').text)
             x_max = int(bbox.find('xmax').text)
@@ -46,6 +50,7 @@ def load_annotated_faces(image_dir, annotation_dir):
     
     return data
 
+# Load faces and labels from directories
 faces, labels = zip(*load_annotated_faces(r"C:\Users\mli00\Desktop\3D_Pictures", r"landmarkXML"))
 
 embeddings = []
@@ -55,8 +60,11 @@ for face in faces:
     if detection:
         embeddings.append(detection[0]['embedding'])
 
+# Encode labels to integer format for the classifier
 label_encoder = LabelEncoder()
 labels_encoded = label_encoder.fit_transform(labels)
+
+# Train an SVM classifier using extracted embeddings and encoded labels
 classifier = SVC(kernel='linear', probability=True)
 classifier.fit(embeddings, labels_encoded)
 

@@ -3,6 +3,7 @@ import mediapipe as mp
 import time
 
 try:
+    # try switch to gpu use if possible
     import tensorflow as tf
     physical_devices = tf.config.list_physical_devices('GPU')
     if len(physical_devices) > 0:
@@ -12,12 +13,12 @@ try:
 except ImportError:
     print("TensorFlow is not installed, cannot check GPU availability.")
 
-mp_face_mesh = mp.solutions.face_mesh
+mp_face_mesh = mp.solutions.face_mesh # utilize mediapipe's face mesh
 mp_drawing = mp.solutions.drawing_utils 
 face_mesh = mp_face_mesh.FaceMesh(max_num_faces=1)
 
 def main(video_source=0):
-    cap = cv2.VideoCapture(video_source)
+    cap = cv2.VideoCapture(video_source) # activate video camera
     
     if not cap.isOpened():
         print("Error: Unable to open video source.")
@@ -31,7 +32,7 @@ def main(video_source=0):
             print("Error: Unable to read frame from video source.")
             break
 
-        frame_small = cv2.resize(frame, (800, 600))  
+        frame_small = cv2.resize(frame, (800, 600)) # produce a window 800 x 600 pixels
         image_rgb = cv2.cvtColor(frame_small, cv2.COLOR_BGR2RGB)
 
         results = face_mesh.process(image_rgb)
@@ -46,6 +47,7 @@ def main(video_source=0):
                     connection_drawing_spec=mp_drawing.DrawingSpec(color=(0, 0, 255), thickness=1, circle_radius=1)  # Red lines
                 )
 
+        # calculate FPS and latency
         current_time = time.time()
         fps = 1 / (current_time - prev_time)
         prev_time = current_time
@@ -56,7 +58,7 @@ def main(video_source=0):
 
         cv2.imshow('Face Mesh', frame_small)
 
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        if cv2.waitKey(1) & 0xFF == ord('q'): # press q to quit
             break
 
     cap.release()
